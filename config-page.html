@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0" name="viewport">
+  <title>Pebblewalker</title>
+  <link rel="stylesheet" href="slate.css">
+</head>
+<body>
+  <form id="main-form">
+    <div class="item-container">
+      <div class="item-container-header">Choose your Pok&eacute;mon</div>
+      <div class="item-container-content">
+        <label class="item">
+          Pok&eacute;mon
+          <select id="pokemon" dir='rtl' class="item-select">
+            <option value="4" class="item-select-option">Charmander</option>
+            <option value="25" class="item-select-option" selected>Pikachu</option>
+          </select>
+        </label>
+      </div>
+    </div>
+    <div class="item-container">
+      <div class="button-container">
+        <input type="button" class="item-button" id="submit_button" value="SEND">
+      </div>
+    </div>
+  </form>
+  <script type="text/javascript" src="slate.js"></script>
+  <script>
+  var submitButton = document.getElementById('submit_button');
+submitButton.addEventListener('click', function() {
+  // Some example configuration values
+  var e = document.getElementById("pokemon");
+  var config = {
+    'pokemon': e.options[e.selectedIndex].value
+  };
+
+  // Return data to watchapp
+  location.href = 'pebblejs://close#' +
+    encodeURIComponent(JSON.stringify(config));
+  alert(config['pokemon']);
+});
+  </script>
+</body>
+</html>
