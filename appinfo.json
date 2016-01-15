@@ -1,0 +1,56 @@
+{
+    "appKeys": {
+        "KEY_CONDITIONS": 1,
+        "KEY_POKEMON": 2,
+        "KEY_TEMPERATURE": 0
+    },
+    "capabilities": [
+        "location",
+        "configurable"
+    ],
+    "companyName": "Pebble",
+    "longName": "Pok\u00e9walker",
+    "projectType": "native",
+    "resources": {
+        "media": [
+            {
+                "file": "images/charmander.png",
+                "name": "IMAGE_CHARMANDER",
+                "targetPlatforms": [
+                    "basalt",
+                    "chalk"
+                ],
+                "type": "bitmap"
+            },
+            {
+                "file": "images/pikachu.png",
+                "name": "IMAGE_PIKACHU",
+                "targetPlatforms": [
+                    "basalt",
+                    "chalk"
+                ],
+                "type": "bitmap"
+            },
+            {
+                "file": "images/line.png",
+                "name": "IMAGE_LINE",
+                "targetPlatforms": [
+                    "basalt",
+                    "chalk"
+                ],
+                "type": "bitmap"
+            }
+        ]
+    },
+    "sdkVersion": "3",
+    "shortName": "Pok\u00e9walker",
+    "targetPlatforms": [
+        "basalt",
+        "chalk"
+    ],
+    "uuid": "35ff5291-2793-4d7a-90a4-f887a04ff356",
+    "versionLabel": "1.0",
+    "watchapp": {
+        "watchface": true
+    }
+}
