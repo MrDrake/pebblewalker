@@ -28,7 +28,7 @@ static void draw_pokemon() {
       pokemon == 4 ? RESOURCE_ID_IMAGE_CHARMANDER : RESOURCE_ID_IMAGE_PIKACHU);
   // Create BitmapLayer to display the GBitmap
   s_pokemon_layer = bitmap_layer_create(
-      GRect(PBL_IF_ROUND_ELSE(80, 68), 40, 72, 72));
+      GRect(PBL_IF_ROUND_ELSE(80, 68), 48, 72, 72));
   // Set the bitmap onto the layer and add to the window
   bitmap_layer_set_bitmap(s_pokemon_layer, s_pokemon_bitmap);
   layer_add_child(window_layer, bitmap_layer_get_layer(s_pokemon_layer));
@@ -43,7 +43,7 @@ static void draw_route(int route) {
       route == 0 ? RESOURCE_ID_IMAGE_ROUTE_TOWNS : RESOURCE_ID_IMAGE_ROUTE_TOWNS);
   // Create BitmapLayer to display the GBitmap
   s_route_layer = bitmap_layer_create(
-      GRect(0, 64, 64, 48));
+      GRect(0, 72, 64, 48));
   // Set the bitmap onto the layer and add to the window
   bitmap_layer_set_bitmap(s_route_layer, s_route_bitmap);
   layer_add_child(window_layer, bitmap_layer_get_layer(s_route_layer));
@@ -90,7 +90,7 @@ static void main_window_load(Window *window) {
   s_background_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_LINE);
   // Create BitmapLayer to display the GBitmap
   s_background_layer = bitmap_layer_create(
-      GRect(0, 112, bounds.size.w, 2));
+      GRect(0, 120, bounds.size.w, 2));
   // Set the bitmap onto the layer and add to the window
   bitmap_layer_set_bitmap(s_background_layer, s_background_bitmap);
   layer_add_child(window_layer, bitmap_layer_get_layer(s_background_layer));
@@ -102,15 +102,15 @@ static void main_window_load(Window *window) {
   // TIME
   // Create time layers
   s_time_layer = text_layer_create(
-      GRect(0, 40, 64, 26));
+      GRect(PBL_IF_ROUND_ELSE(50, 32), PBL_IF_ROUND_ELSE(16, 8), 80, 26));
 
   // Load custom font
-  s_poketch_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_POKETCH_24));
+  s_poketch_font = fonts_get_system_font(FONT_KEY_LECO_26_BOLD_NUMBERS_AM_PM);
     
   // Style the hour text
   text_layer_set_background_color(s_time_layer, GColorClear);
   text_layer_set_text_color(s_time_layer, GColorBlack);
-  text_layer_set_text_alignment(s_time_layer, GTextAlignmentRight);
+  text_layer_set_text_alignment(s_time_layer, GTextAlignmentCenter);
   text_layer_set_text(s_time_layer, "00:00");
   text_layer_set_font(s_time_layer, s_poketch_font);
 
@@ -120,7 +120,7 @@ static void main_window_load(Window *window) {
   // STEP
   // Create step Layer
   s_step_layer = text_layer_create(
-      GRect(PBL_IF_ROUND_ELSE(80, 72), 112, 64, 26));
+      GRect(PBL_IF_ROUND_ELSE(80, 72), 120, 64, 24));
 
   // Style the text
   text_layer_set_background_color(s_step_layer, GColorClear);
