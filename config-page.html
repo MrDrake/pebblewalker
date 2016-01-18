@@ -35,7 +35,7 @@ submitButton.addEventListener('click', function() {
   var config = {
     'pokemon': parseInt(e.options[e.selectedIndex].value)
   };
-
+  console.log('FOO: ', config);
   // Return data to watchapp
   location.href = 'pebblejs://close#' +
     encodeURIComponent(JSON.stringify(config));
