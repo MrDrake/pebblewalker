@@ -11,7 +11,8 @@ Pebble.addEventListener('webviewclosed', function(e) {
 
   // Prepare AppMessage payload
   var dict = {
-    'KEY_POKEMON': config_data['pokemon']
+    'KEY_POKEMON': config_data['pokemon'],
+    'KEY_ROUTE': config_data['route']
   };
 
   // Send settings to Pebble watchapp

@@ -1,6 +1,7 @@
 {
     "appKeys": {
-        "KEY_POKEMON": 0
+        "KEY_POKEMON": 0,
+        "KEY_ROUTE": 1
     },
     "capabilities": [
         "location",
@@ -12,7 +13,70 @@
     "resources": {
         "media": [
             {
-                "file": "images/route_towns.png",
+                "file": "images/route_city7.png",
+                "name": "IMAGE_ROUTE_CITY",
+                "targetPlatforms": [
+                    "basalt",
+                    "chalk"
+                ],
+                "type": "bitmap"
+            },
+            {
+                "file": "images/route_lakes6.png",
+                "name": "IMAGE_ROUTE_LAKES",
+                "targetPlatforms": [
+                    "basalt",
+                    "chalk"
+                ],
+                "type": "bitmap"
+            },
+            {
+                "file": "images/route_caves5.png",
+                "name": "IMAGE_ROUTE_CAVES",
+                "targetPlatforms": [
+                    "basalt",
+                    "chalk"
+                ],
+                "type": "bitmap"
+            },
+            {
+                "file": "images/route_sea3.png",
+                "name": "IMAGE_ROUTE_SEA",
+                "targetPlatforms": [
+                    "basalt",
+                    "chalk"
+                ],
+                "type": "bitmap"
+            },
+            {
+                "file": "images/route_paths2.png",
+                "name": "IMAGE_ROUTE_PATHS",
+                "targetPlatforms": [
+                    "basalt",
+                    "chalk"
+                ],
+                "type": "bitmap"
+            },
+            {
+                "file": "images/route_forests1.png",
+                "name": "IMAGE_ROUTE_FORESTS",
+                "targetPlatforms": [
+                    "basalt",
+                    "chalk"
+                ],
+                "type": "bitmap"
+            },
+            {
+                "file": "images/route_plains0.png",
+                "name": "IMAGE_ROUTE_PLAINS",
+                "targetPlatforms": [
+                    "basalt",
+                    "chalk"
+                ],
+                "type": "bitmap"
+            },
+            {
+                "file": "images/route_towns4.png",
                 "name": "IMAGE_ROUTE_TOWNS",
                 "targetPlatforms": [
                     "basalt",
@@ -21,14 +85,40 @@
                 "type": "bitmap"
             },
             {
-                "characterRegex": "[0-9:]",
-                "file": "fonts/HMPoketchDigital.ttf",
-                "name": "FONT_POKETCH_24",
+                "file": "images/mew.png",
+                "name": "IMAGE_MEW",
                 "targetPlatforms": [
                     "basalt",
                     "chalk"
                 ],
-                "type": "font"
+                "type": "bitmap"
+            },
+            {
+                "file": "images/porygon.png",
+                "name": "IMAGE_PORYGON",
+                "targetPlatforms": [
+                    "basalt",
+                    "chalk"
+                ],
+                "type": "bitmap"
+            },
+            {
+                "file": "images/squirtle.png",
+                "name": "IMAGE_SQUIRTLE",
+                "targetPlatforms": [
+                    "basalt",
+                    "chalk"
+                ],
+                "type": "bitmap"
+            },
+            {
+                "file": "images/bulbasaur.png",
+                "name": "IMAGE_BULBASAUR",
+                "targetPlatforms": [
+                    "basalt",
+                    "chalk"
+                ],
+                "type": "bitmap"
             },
             {
                 "file": "images/charmander.png",

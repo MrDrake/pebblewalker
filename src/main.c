@@ -1,6 +1,7 @@
 #include <pebble.h>
 
 #define KEY_POKEMON 0
+#define KEY_ROUTE 1
 
 static Window *s_main_window;
 
@@ -16,16 +17,23 @@ static GBitmap *s_pokemon_bitmap;
 static BitmapLayer *s_route_layer;
 static GBitmap *s_route_bitmap;
 
-static GFont s_poketch_font;
-
 static void draw_pokemon() {
   Layer *window_layer = window_get_root_layer(s_main_window);
   int pokemon = persist_exists(KEY_POKEMON) ? persist_read_int(KEY_POKEMON) : 0;
+  int resource_id;
               
   // POKEMON
+  // Get resource id
+  switch(pokemon) {
+      case 1: resource_id = RESOURCE_ID_IMAGE_BULBASAUR; break;
+      case 4: resource_id = RESOURCE_ID_IMAGE_CHARMANDER; break;
+      case 7: resource_id = RESOURCE_ID_IMAGE_SQUIRTLE; break;
+      case 137: resource_id = RESOURCE_ID_IMAGE_PORYGON; break;
+      case 251: resource_id = RESOURCE_ID_IMAGE_MEW; break;
+      default: resource_id = RESOURCE_ID_IMAGE_PIKACHU;
+  };
   // Create GBitmap
-  s_pokemon_bitmap = gbitmap_create_with_resource(
-      pokemon == 4 ? RESOURCE_ID_IMAGE_CHARMANDER : RESOURCE_ID_IMAGE_PIKACHU);
+  s_pokemon_bitmap = gbitmap_create_with_resource(resource_id);
   // Create BitmapLayer to display the GBitmap
   s_pokemon_layer = bitmap_layer_create(
       GRect(PBL_IF_ROUND_ELSE(80, 68), 48, 72, 72));
@@ -34,13 +42,25 @@ static void draw_pokemon() {
   layer_add_child(window_layer, bitmap_layer_get_layer(s_pokemon_layer));
 }
 
-static void draw_route(int route) {
+static void draw_route() {
   Layer *window_layer = window_get_root_layer(s_main_window);
+  int route = persist_exists(KEY_ROUTE) ? persist_read_int(KEY_ROUTE) : 0;
+  int resource_id;
               
   // ROUTE
+  // Get resource id
+  switch(route) {
+      case 1: resource_id = RESOURCE_ID_IMAGE_ROUTE_PATHS; break;
+      case 2: resource_id = RESOURCE_ID_IMAGE_ROUTE_FORESTS; break;
+      case 3: resource_id = RESOURCE_ID_IMAGE_ROUTE_SEA; break;
+      case 4: resource_id = RESOURCE_ID_IMAGE_ROUTE_TOWNS; break;
+      case 5: resource_id = RESOURCE_ID_IMAGE_ROUTE_CAVES; break;
+      case 6: resource_id = RESOURCE_ID_IMAGE_ROUTE_LAKES; break;
+      case 7: resource_id = RESOURCE_ID_IMAGE_ROUTE_CITY; break;
+      default: resource_id = RESOURCE_ID_IMAGE_ROUTE_PLAINS;
+  };
   // Create GBitmap
-  s_route_bitmap = gbitmap_create_with_resource(
-      route == 0 ? RESOURCE_ID_IMAGE_ROUTE_TOWNS : RESOURCE_ID_IMAGE_ROUTE_TOWNS);
+  s_route_bitmap = gbitmap_create_with_resource(resource_id);
   // Create BitmapLayer to display the GBitmap
   s_route_layer = bitmap_layer_create(
       GRect(0, 72, 64, 48));
@@ -51,12 +71,19 @@ static void draw_route(int route) {
 
 static void inbox_received_callback(DictionaryIterator *iterator, void *context) {
   Tuple *pokemon_t = dict_find(iterator, KEY_POKEMON);
-  int pokemon;
+  Tuple *route_t = dict_find(iterator, KEY_ROUTE);
+  int pokemon, route;
     
   if(pokemon_t) {
     pokemon = (int)pokemon_t->value->int32;
     persist_write_int(KEY_POKEMON, pokemon);
     draw_pokemon();
+  }
+
+  if(route_t) {
+    route = (int)route_t->value->int32;
+    persist_write_int(KEY_ROUTE, route);
+    draw_route();
   }
 }
 
@@ -97,22 +124,19 @@ static void main_window_load(Window *window) {
     
   // draw the initial pokemon and route
   draw_pokemon();  
-  draw_route(0);  
+  draw_route();  
     
   // TIME
   // Create time layers
   s_time_layer = text_layer_create(
       GRect(PBL_IF_ROUND_ELSE(50, 32), PBL_IF_ROUND_ELSE(16, 8), 80, 26));
 
-  // Load custom font
-  s_poketch_font = fonts_get_system_font(FONT_KEY_LECO_26_BOLD_NUMBERS_AM_PM);
-    
-  // Style the hour text
+  // Style the text
   text_layer_set_background_color(s_time_layer, GColorClear);
   text_layer_set_text_color(s_time_layer, GColorBlack);
   text_layer_set_text_alignment(s_time_layer, GTextAlignmentCenter);
   text_layer_set_text(s_time_layer, "00:00");
-  text_layer_set_font(s_time_layer, s_poketch_font);
+  text_layer_set_font(s_time_layer, fonts_get_system_font(FONT_KEY_LECO_26_BOLD_NUMBERS_AM_PM));
 
   // Add layers to the window
   layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_time_layer));
@@ -144,7 +168,6 @@ static void main_window_unload(Window *window) {
   // Destroy text elements
   text_layer_destroy(s_step_layer);
   text_layer_destroy(s_time_layer);
-  fonts_unload_custom_font(s_poketch_font);
 }
 
 
