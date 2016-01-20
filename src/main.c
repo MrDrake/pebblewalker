@@ -97,9 +97,10 @@ static void update_time() {
   static char s_tbuffer[8];
 
   // Display time
-  strftime(s_buffer, sizeof(s_buffer), "00%H%M", t);
+  snprintf(s_buffer, sizeof(s_buffer), "%d%d", t->tm_hour, t->tm_min);
+  //snprintf(s_buffer, sizeof(s_buffer), "%d", health_service_sum_today(HealthMetricStepCount));
   text_layer_set_text(s_step_layer, s_buffer);
-  strftime(s_tbuffer, sizeof(s_tbuffer), "%H:%M", t);
+  snprintf(s_tbuffer, sizeof(s_tbuffer), "%d:%02d", t->tm_hour, t->tm_min);
   text_layer_set_text(s_time_layer, s_tbuffer);
 }
 
