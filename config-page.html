@@ -29,7 +29,7 @@
       <div class="item-container-content">
         <label class="item">
           Route
-          <select id="pokemon" dir='rtl' class="item-select">
+          <select id="route" dir='rtl' class="item-select">
             <option value="0" class="item-select-option" selected>Plains</option>
             <option value="1" class="item-select-option">Forests</option>
             <option value="2" class="item-select-option">Paths</option>
@@ -37,7 +37,7 @@
             <option value="4" class="item-select-option">Towns</option>
             <option value="5" class="item-select-option">Caves</option>
             <option value="6" class="item-select-option">Lakes</option>
-            <option value="7" class="item-select-option">City</option>
+          <option value="7" class="item-select-option">City~</option>
           </select>
         </label>
       </div>
@@ -71,7 +71,7 @@
     var e = document.getElementById("pokemon");
     var f = document.getElementById("route");
     var config = {
-      'pokemon': parseInt(e.options[e.selectedIndex].value)
+      'pokemon': parseInt(e.options[e.selectedIndex].value),
       'route': parseInt(f.options[f.selectedIndex].value)
     };
 
