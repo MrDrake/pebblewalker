@@ -15,6 +15,48 @@
     "resources": {
         "media": [
             {
+                "file": "images/battery5.png",
+                "name": "IMAGE_BATTERY5",
+                "targetPlatforms": null,
+                "type": "bitmap"
+            },
+            {
+                "file": "images/battery4.png",
+                "name": "IMAGE_BATTERY4",
+                "targetPlatforms": null,
+                "type": "bitmap"
+            },
+            {
+                "file": "images/battery3.png",
+                "name": "IMAGE_BATTERY3",
+                "targetPlatforms": null,
+                "type": "bitmap"
+            },
+            {
+                "file": "images/battery2.png",
+                "name": "IMAGE_BATTERY2",
+                "targetPlatforms": null,
+                "type": "bitmap"
+            },
+            {
+                "file": "images/battery1.png",
+                "name": "IMAGE_BATTERY1",
+                "targetPlatforms": null,
+                "type": "bitmap"
+            },
+            {
+                "file": "images/battery0.png",
+                "name": "IMAGE_BATTERY0",
+                "targetPlatforms": null,
+                "type": "bitmap"
+            },
+            {
+                "file": "images/battery.png",
+                "name": "IMAGE_BATTERY",
+                "targetPlatforms": null,
+                "type": "bitmap"
+            },
+            {
                 "file": "images/route_city7.png",
                 "name": "IMAGE_ROUTE_CITY",
                 "targetPlatforms": [

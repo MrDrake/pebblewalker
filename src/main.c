@@ -17,6 +17,9 @@ static GBitmap *s_pokemon_bitmap;
 static BitmapLayer *s_route_layer;
 static GBitmap *s_route_bitmap;
 
+static BitmapLayer *s_battery_layer;
+static GBitmap *s_battery_bitmap;
+
 static void draw_pokemon() {
   Layer *window_layer = window_get_root_layer(s_main_window);
   int pokemon = persist_exists(KEY_POKEMON) ? persist_read_int(KEY_POKEMON) : 0;
@@ -34,9 +37,7 @@ static void draw_pokemon() {
   };
   // Create GBitmap
   s_pokemon_bitmap = gbitmap_create_with_resource(resource_id);
-  // Create BitmapLayer to display the GBitmap
-  s_pokemon_layer = bitmap_layer_create(
-      GRect(PBL_IF_ROUND_ELSE(80, 68), 48, 72, 72));
+
   // Set the bitmap onto the layer and add to the window
   bitmap_layer_set_bitmap(s_pokemon_layer, s_pokemon_bitmap);
   layer_add_child(window_layer, bitmap_layer_get_layer(s_pokemon_layer));
@@ -61,12 +62,39 @@ static void draw_route() {
   };
   // Create GBitmap
   s_route_bitmap = gbitmap_create_with_resource(resource_id);
-  // Create BitmapLayer to display the GBitmap
-  s_route_layer = bitmap_layer_create(
-      GRect(0, 72, 64, 48));
+
   // Set the bitmap onto the layer and add to the window
   bitmap_layer_set_bitmap(s_route_layer, s_route_bitmap);
   layer_add_child(window_layer, bitmap_layer_get_layer(s_route_layer));
+}
+
+static void draw_battery() {
+  Layer *window_layer = window_get_root_layer(s_main_window);
+  int resource_id;
+  BatteryChargeState charge_state = battery_state_service_peek();
+ 
+  if (charge_state.is_charging) {
+    resource_id = RESOURCE_ID_IMAGE_BATTERY;
+  } else if(charge_state.charge_percent <= 10) {
+    resource_id = RESOURCE_ID_IMAGE_BATTERY0;
+  } else if(charge_state.charge_percent <= 28) {
+    resource_id = RESOURCE_ID_IMAGE_BATTERY1;
+  } else if(charge_state.charge_percent <= 46) {
+    resource_id = RESOURCE_ID_IMAGE_BATTERY2;
+  } else if(charge_state.charge_percent <= 64) {
+    resource_id = RESOURCE_ID_IMAGE_BATTERY3;
+  } else if(charge_state.charge_percent <= 82) {
+    resource_id = RESOURCE_ID_IMAGE_BATTERY4;
+  } else {
+    resource_id = RESOURCE_ID_IMAGE_BATTERY5;
+  }
+
+  // Create GBitmap
+  s_battery_bitmap = gbitmap_create_with_resource(resource_id);
+
+  // Set the bitmap onto the layer and add to the window
+  bitmap_layer_set_bitmap(s_battery_layer, s_battery_bitmap);
+  layer_add_child(window_layer, bitmap_layer_get_layer(s_battery_layer));
 }
 
 static void inbox_received_callback(DictionaryIterator *iterator, void *context) {
@@ -87,12 +115,12 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
   }
 }
 
-static void update_time(struct tm *t) {
+static void update_time() {
   // time buffer
-  static char s_buffer[8];
+  static char s_buffer[9];
 
   // Display time
-  snprintf(s_buffer, sizeof(s_buffer), "%d:%02d", t->tm_hour, t->tm_min);
+  clock_copy_time_string(s_buffer, 9);
   text_layer_set_text(s_time_layer, s_buffer);
 }
 
@@ -106,12 +134,16 @@ static void update_step() {
 }
 
 static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
-  update_time(tick_time);
+  update_time();
   update_step();
 }
 
 static void tap_handler(AccelAxisType axis, int32_t direction) {
   update_step();
+}
+
+static void battery_handler(BatteryChargeState charge_state) {
+  draw_battery();   
 }
 
 static void main_window_load(Window *window) {
@@ -123,20 +155,27 @@ static void main_window_load(Window *window) {
   // Create GBitmap
   s_background_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_LINE);
   // Create BitmapLayer to display the GBitmap
-  s_background_layer = bitmap_layer_create(
-      GRect(0, 120, bounds.size.w, 2));
+  s_background_layer = bitmap_layer_create(GRect(0, 120, bounds.size.w, 2));
   // Set the bitmap onto the layer and add to the window
   bitmap_layer_set_bitmap(s_background_layer, s_background_bitmap);
   layer_add_child(window_layer, bitmap_layer_get_layer(s_background_layer));
+
+  // Create BitmapLayer to display the Pokemon GBitmap
+  s_pokemon_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(80, 68), 48, 72, 72));
+  // Create BitmapLayer to display the Route GBitmap
+  s_route_layer = bitmap_layer_create(GRect(0, 72, 64, 48));
+  // Create BitmapLayer to display the Battery GBitmap
+  s_battery_layer = bitmap_layer_create(GRect(40, 130, 24, 12));
     
   // draw the initial pokemon and route
   draw_pokemon();  
   draw_route();  
+  draw_battery();
     
   // TIME
   // Create time layers
   s_time_layer = text_layer_create(
-      GRect(PBL_IF_ROUND_ELSE(50, 32), PBL_IF_ROUND_ELSE(16, 8), 80, 26));
+      GRect(PBL_IF_ROUND_ELSE(18, 0), PBL_IF_ROUND_ELSE(20, 8), 144, 26));
 
   // Style the text
   text_layer_set_background_color(s_time_layer, GColorClear);
@@ -172,6 +211,12 @@ static void main_window_unload(Window *window) {
   gbitmap_destroy(s_pokemon_bitmap);
   bitmap_layer_destroy(s_pokemon_layer);
 
+  gbitmap_destroy(s_route_bitmap);
+  bitmap_layer_destroy(s_route_layer);  
+    
+  gbitmap_destroy(s_battery_bitmap);
+  bitmap_layer_destroy(s_battery_layer);  
+    
   // Destroy text elements
   text_layer_destroy(s_step_layer);
   text_layer_destroy(s_time_layer);
@@ -195,12 +240,14 @@ static void init() {
   window_stack_push(s_main_window, true);
 
   // Make sure the steps are displayed from the start
-  //update_time();
+  update_time();
   update_step();
+  draw_battery();
 
   // Register with TickTimerService and AccelTapService
   tick_timer_service_subscribe(MINUTE_UNIT, tick_handler);
   accel_tap_service_subscribe(tap_handler);
+  battery_state_service_subscribe(battery_handler);
 
   // Register callbacks
   app_message_register_inbox_received(inbox_received_callback);
