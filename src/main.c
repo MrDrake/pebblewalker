@@ -110,6 +110,10 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
   update_step();
 }
 
+static void tap_handler(AccelAxisType axis, int32_t direction) {
+  update_step();
+}
+
 static void main_window_load(Window *window) {
   // Get information about the Window
   Layer *window_layer = window_get_root_layer(window);
@@ -194,8 +198,9 @@ static void init() {
   //update_time();
   update_step();
 
-  // Register with TickTimerService
+  // Register with TickTimerService and AccelTapService
   tick_timer_service_subscribe(MINUTE_UNIT, tick_handler);
+  accel_tap_service_subscribe(tap_handler);
 
   // Register callbacks
   app_message_register_inbox_received(inbox_received_callback);
