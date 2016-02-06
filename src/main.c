@@ -87,25 +87,27 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
   }
 }
 
-static void update_time() {
-  // Get a tm structure
-  time_t temp = time(NULL); 
-  struct tm *t = localtime(&temp);
-
-  // time buffers
+static void update_time(struct tm *t) {
+  // time buffer
   static char s_buffer[8];
-  static char s_tbuffer[8];
 
   // Display time
-  snprintf(s_buffer, sizeof(s_buffer), "%d%d", t->tm_hour, t->tm_min);
-  //snprintf(s_buffer, sizeof(s_buffer), "%d", health_service_sum_today(HealthMetricStepCount));
+  snprintf(s_buffer, sizeof(s_buffer), "%d:%02d", t->tm_hour, t->tm_min);
+  text_layer_set_text(s_time_layer, s_buffer);
+}
+
+static void update_step() {
+  // buffer
+  static char s_buffer[8];
+
+  // Display time and step count
+  snprintf(s_buffer, sizeof(s_buffer), "%d", (int)health_service_sum_today(HealthMetricStepCount));
   text_layer_set_text(s_step_layer, s_buffer);
-  snprintf(s_tbuffer, sizeof(s_tbuffer), "%d:%02d", t->tm_hour, t->tm_min);
-  text_layer_set_text(s_time_layer, s_tbuffer);
 }
 
 static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
-  update_time();
+  update_time(tick_time);
+  update_step();
 }
 
 static void main_window_load(Window *window) {
@@ -188,8 +190,9 @@ static void init() {
   // Show the Window on the watch, with animated=true
   window_stack_push(s_main_window, true);
 
-  // Make sure the time is displayed from the start
-  update_time();
+  // Make sure the steps are displayed from the start
+  //update_time();
+  update_step();
 
   // Register with TickTimerService
   tick_timer_service_subscribe(MINUTE_UNIT, tick_handler);

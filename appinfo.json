@@ -5,9 +5,11 @@
     },
     "capabilities": [
         "location",
-        "configurable"
+        "configurable",
+        "health"
     ],
     "companyName": "Pebble",
+    "enableMultiJS": false,
     "longName": "P\u00e9bbleWalker",
     "projectType": "native",
     "resources": {
